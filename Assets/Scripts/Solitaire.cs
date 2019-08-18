@@ -1,16 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using System.Linq;
 
 public class Solitaire : MonoBehaviour
 {
     public Sprite[] CardFronts;
     public GameObject CardPrefab;
     public static string[] Suits = new string[] { "C", "D", "H", "S" };
-    public static string[] Values = new string[] { "A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+    public static string[] Values = new string[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+
+    public GameObject[] TopPosition;
+    public GameObject[] BottomPosition;
 
     public List<string> Deck;
+
+    public List<string>[] Tops;
+    public List<string>[] Bottoms;
+
+    private List<string> Bottom0 = new List<string>();
+    private List<string> Bottom1 = new List<string>();
+    private List<string> Bottom2 = new List<string>();
+    private List<string> Bottom3 = new List<string>();
+    private List<string> Bottom4 = new List<string>();
+    private List<string> Bottom5 = new List<string>();
+    private List<string> Bottom6 = new List<string>();
+
 
     public void StartGame()
     {
@@ -28,6 +43,7 @@ public class Solitaire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Bottoms = new List<string>[] { Bottom0, Bottom1, Bottom2, Bottom3, Bottom4, Bottom5, Bottom6 };
         StartGame();
     }
 
@@ -75,8 +91,23 @@ public class Solitaire : MonoBehaviour
         {
             GameObject newCard = Instantiate(CardPrefab, new Vector3(transform.position.x, transform.position.y - yOffset, transform.position.z - zOffset), Quaternion.identity);
             newCard.name = card;
-            yOffset += .1f;
+
+            newCard.GetComponent<Selectable>().FaceUp = true;
+
+            yOffset += .3f;
             zOffset += .03f;
+        }
+    }
+
+    public void SolitaireSort()
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = i; j < 7; j = i++)
+            {
+                Bottoms[j].Add(Deck.Last<string>());
+                Deck.RemoveAt(Deck.Count - 1); 
+            }
         }
     }
 }
