@@ -6,6 +6,7 @@ using System;
 public class Solitaire : MonoBehaviour
 {
     public Sprite[] CardFronts;
+    public GameObject CardPrefab;
     public static string[] Suits = new string[] { "C", "D", "H", "S" };
     public static string[] Values = new string[] { "A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 
@@ -22,7 +23,7 @@ public class Solitaire : MonoBehaviour
         }
 
         Shuffle(Deck);
-
+        SolitaireDeal();
     }
     // Start is called before the first frame update
     void Start()
@@ -62,6 +63,20 @@ public class Solitaire : MonoBehaviour
             T value = list[k];
             list[k] = list[n];
             list[n] = value;
+        }
+    }
+
+    public void SolitaireDeal()
+    {
+        float yOffset = 0f;
+        float zOffset = 0.03f;
+
+        foreach (string card in Deck)
+        {
+            GameObject newCard = Instantiate(CardPrefab, new Vector3(transform.position.x, transform.position.y - yOffset, transform.position.z - zOffset), Quaternion.identity);
+            newCard.name = card;
+            yOffset += .1f;
+            zOffset += .03f;
         }
     }
 }
