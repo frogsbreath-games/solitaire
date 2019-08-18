@@ -5,6 +5,7 @@ using System;
 
 public class Solitaire : MonoBehaviour
 {
+    public Sprite[] CardFronts;
     public static string[] Suits = new string[] { "C", "D", "H", "S" };
     public static string[] Values = new string[] { "A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 
@@ -14,12 +15,14 @@ public class Solitaire : MonoBehaviour
     {
         Deck = MakeDeck();
 
-        Shuffle(Deck);
 
         foreach (var item in Deck)
         {
             print(item);
         }
+
+        Shuffle(Deck);
+
     }
     // Start is called before the first frame update
     void Start()
