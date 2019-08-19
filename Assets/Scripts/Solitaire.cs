@@ -31,13 +31,13 @@ public class Solitaire : MonoBehaviour
     {
         Deck = MakeDeck();
 
-
         foreach (var item in Deck)
         {
             print(item);
         }
 
         Shuffle(Deck);
+        SolitaireSort();
         SolitaireDeal();
     }
     // Start is called before the first frame update
@@ -84,18 +84,21 @@ public class Solitaire : MonoBehaviour
 
     public void SolitaireDeal()
     {
-        float yOffset = 0f;
-        float zOffset = 0.03f;
-
-        foreach (string card in Deck)
+        for (int i = 0; i < 7; i++)
         {
-            GameObject newCard = Instantiate(CardPrefab, new Vector3(transform.position.x, transform.position.y - yOffset, transform.position.z - zOffset), Quaternion.identity);
-            newCard.name = card;
+            float yOffset = 0f;
+            float zOffset = 0.03f;
 
-            newCard.GetComponent<Selectable>().FaceUp = true;
+            foreach (string card in Bottoms[i])
+            {
+                GameObject newCard = Instantiate(CardPrefab, new Vector3(BottomPosition[i].transform.position.x, BottomPosition[i].transform.position.y - yOffset, BottomPosition[i].transform.position.z - zOffset), Quaternion.identity, BottomPosition[i].transform);
+                newCard.name = card;
 
-            yOffset += .3f;
-            zOffset += .03f;
+                newCard.GetComponent<Selectable>().FaceUp = true;
+
+                yOffset += .3f;
+                zOffset += .03f;
+            }
         }
     }
 
@@ -103,7 +106,7 @@ public class Solitaire : MonoBehaviour
     {
         for (int i = 0; i < 7; i++)
         {
-            for (int j = i; j < 7; j = i++)
+            for (int j = i; j < 7; j++)
             {
                 Bottoms[j].Add(Deck.Last<string>());
                 Deck.RemoveAt(Deck.Count - 1); 
