@@ -38,7 +38,7 @@ public class Solitaire : MonoBehaviour
 
         Shuffle(Deck);
         SolitaireSort();
-        SolitaireDeal();
+        StartCoroutine(SolitaireDeal());
     }
     // Start is called before the first frame update
     void Start()
@@ -82,7 +82,8 @@ public class Solitaire : MonoBehaviour
         }
     }
 
-    public void SolitaireDeal()
+    //Coroutine with IEnumator 
+    public IEnumerator SolitaireDeal()
     {
         for (int i = 0; i < 7; i++)
         {
@@ -91,6 +92,7 @@ public class Solitaire : MonoBehaviour
 
             foreach (string card in Bottoms[i])
             {
+                yield return new WaitForSeconds(0.01f);
                 GameObject newCard = Instantiate(CardPrefab, new Vector3(BottomPosition[i].transform.position.x, BottomPosition[i].transform.position.y - yOffset, BottomPosition[i].transform.position.z - zOffset), Quaternion.identity, BottomPosition[i].transform);
                 newCard.name = card;
 
