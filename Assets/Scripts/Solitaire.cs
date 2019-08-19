@@ -94,7 +94,9 @@ public class Solitaire : MonoBehaviour
                 GameObject newCard = Instantiate(CardPrefab, new Vector3(BottomPosition[i].transform.position.x, BottomPosition[i].transform.position.y - yOffset, BottomPosition[i].transform.position.z - zOffset), Quaternion.identity, BottomPosition[i].transform);
                 newCard.name = card;
 
-                newCard.GetComponent<Selectable>().FaceUp = true;
+                if(card == Bottoms[i][Bottoms[i].Count - 1]){
+                    newCard.GetComponent<Selectable>().FaceUp = true;
+                }
 
                 yOffset += .3f;
                 zOffset += .03f;
