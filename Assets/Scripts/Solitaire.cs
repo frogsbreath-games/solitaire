@@ -7,6 +7,7 @@ public class Solitaire : MonoBehaviour
 {
     public Sprite[] CardFronts;
     public GameObject CardPrefab;
+    public GameObject DeckButton;
     public static string[] Suits = new string[] { "C", "D", "H", "S" };
     public static string[] Values = new string[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 
@@ -25,6 +26,15 @@ public class Solitaire : MonoBehaviour
     private List<string> Bottom4 = new List<string>();
     private List<string> Bottom5 = new List<string>();
     private List<string> Bottom6 = new List<string>();
+
+    private int Trips;
+    private int TripsRemainder;
+
+    private int DeckLocation;
+
+    public List<string> TripsDisplayed;
+
+    public List<List<string>> ListOfTrips = new List<List<string>>();
 
 
     public void StartGame()
@@ -114,6 +124,56 @@ public class Solitaire : MonoBehaviour
             {
                 Bottoms[j].Add(Deck.Last<string>());
                 Deck.RemoveAt(Deck.Count - 1); 
+            }
+        }
+    }
+
+    public void SortDeckIntoTrips()
+    {
+        Trips = Deck.Count / 3;
+        TripsRemainder = Deck.Count % 3;
+
+        ListOfTrips.Clear();
+
+        int index = 0;
+        for (int i = 0; i < Trips; i++)
+        {
+            List<string> myTrips = new List<string>();
+            for (int j = 0; j < 3; j++)
+            {
+                myTrips.Add(Deck[j + index]);
+            }
+            ListOfTrips.Add(myTrips);
+            index += 3;
+        }
+
+        if (TripsRemainder != 0)
+        {
+            List<string> remainingCards = new List<string>();
+            index = 0;
+            for (int k = 0; k < TripsRemainder; k++)
+            {
+                remainingCards.Add(Deck[Deck.Count - TripsRemainder + index]);
+                index++;
+            }
+            ListOfTrips.Add(remainingCards);
+            Trips++;
+        }
+
+        DeckLocation = 0;
+    }
+
+    public void DealFromDeck()
+    {
+        if (DeckLocation < Trips)
+        {
+            TripsDisplayed.Clear();
+            float xOffset = 2.5f;
+            float zOffset = -0.2f;
+
+            foreach (string card in ListOfTrips[DeckLocation])
+            {
+               GameObject topCard = Instantiate(CardPrefab, new Vector3(DeckButton.transform.position.x + xOffset, DeckButton.transform.position.y, DeckButton.transform.position.z + zOffset), Quaternion.identity, DeckButton.transform);
             }
         }
     }
