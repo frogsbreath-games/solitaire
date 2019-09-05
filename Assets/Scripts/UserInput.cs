@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class UserInput : MonoBehaviour
 {
+    private Solitaire solitaire;
     // Start is called before the first frame update
     void Start()
     {
-        
+        solitaire = FindObjectOfType<Solitaire>();
     }
 
     // Update is called once per frame
@@ -29,6 +30,7 @@ public class UserInput : MonoBehaviour
                 {
                     //Deck
                     Deck();
+                    solitaire.DealFromDeck();
                 }
                 if (hit.collider.CompareTag("Card"))
                 {

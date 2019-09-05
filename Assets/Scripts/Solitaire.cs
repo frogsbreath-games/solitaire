@@ -15,6 +15,7 @@ public class Solitaire : MonoBehaviour
     public GameObject[] BottomPosition;
 
     public List<string> Deck;
+    public List<string> Discard = new List<string>();
 
     public List<string>[] Tops;
     public List<string>[] Bottoms;
@@ -49,6 +50,7 @@ public class Solitaire : MonoBehaviour
         Shuffle(Deck);
         SolitaireSort();
         StartCoroutine(SolitaireDeal());
+        SortDeckIntoTrips();
     }
     // Start is called before the first frame update
     void Start()
@@ -112,8 +114,19 @@ public class Solitaire : MonoBehaviour
 
                 yOffset += .3f;
                 zOffset += .03f;
+
+                Discard.Add(card);
             }
         }
+
+        foreach (string card in Discard)
+        {
+            if (Deck.Contains(card))
+            {
+                Deck.Remove(card);
+            }
+        }
+        Discard.Clear();
     }
 
     public void SolitaireSort()
@@ -165,6 +178,18 @@ public class Solitaire : MonoBehaviour
 
     public void DealFromDeck()
     {
+        //Add remaining cards to discard
+
+        foreach (Transform child in DeckButton.transform)
+        {
+            if (child.CompareTag("Card"))
+            {
+                Deck.Remove(child.name);
+                Discard.Add(child.name);
+                Destroy(child.gameObject);
+            }
+        }
+
         if (DeckLocation < Trips)
         {
             TripsDisplayed.Clear();
@@ -173,8 +198,31 @@ public class Solitaire : MonoBehaviour
 
             foreach (string card in ListOfTrips[DeckLocation])
             {
-               GameObject topCard = Instantiate(CardPrefab, new Vector3(DeckButton.transform.position.x + xOffset, DeckButton.transform.position.y, DeckButton.transform.position.z + zOffset), Quaternion.identity, DeckButton.transform);
+                GameObject topCard = Instantiate(CardPrefab, new Vector3(DeckButton.transform.position.x + xOffset, DeckButton.transform.position.y, DeckButton.transform.position.z + zOffset), Quaternion.identity, DeckButton.transform);
+                xOffset += 0.5f;
+                zOffset -= 0.2f;
+
+                topCard.name = card;
+                TripsDisplayed.Add(card);
+                topCard.GetComponent<Selectable>().FaceUp = true;
+
             }
+            DeckLocation++;
         }
+        else
+        {
+            //Restack top deck;
+            RestackTopDeck();
+        }
+    }
+
+    public void RestackTopDeck()
+    {
+        foreach (string card in Discard)
+        {
+            Deck.Add(card);
+        }
+        Discard.Clear();
+        SortDeckIntoTrips();
     }
 }
