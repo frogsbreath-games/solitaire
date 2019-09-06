@@ -199,6 +199,7 @@ public class Solitaire : MonoBehaviour
             foreach (string card in ListOfTrips[DeckLocation])
             {
                 GameObject topCard = Instantiate(CardPrefab, new Vector3(DeckButton.transform.position.x + xOffset, DeckButton.transform.position.y, DeckButton.transform.position.z + zOffset), Quaternion.identity, DeckButton.transform);
+                topCard.transform.localScale = new Vector3(1f, 1f, 0);
                 xOffset += 0.5f;
                 zOffset -= 0.2f;
 
