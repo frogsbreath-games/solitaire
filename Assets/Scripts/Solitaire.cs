@@ -222,6 +222,7 @@ public class Solitaire : MonoBehaviour
 
     public void RestackTopDeck()
     {
+        Deck.Clear();
         foreach (string card in Discard)
         {
             Deck.Add(card);
