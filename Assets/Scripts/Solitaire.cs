@@ -5,6 +5,7 @@ using System.Linq;
 
 public class Solitaire : MonoBehaviour
 {
+
     public Sprite[] CardFronts;
     public GameObject CardPrefab;
     public GameObject DeckButton;
@@ -107,6 +108,7 @@ public class Solitaire : MonoBehaviour
                 yield return new WaitForSeconds(0.01f);
                 GameObject newCard = Instantiate(CardPrefab, new Vector3(BottomPosition[i].transform.position.x, BottomPosition[i].transform.position.y - yOffset, BottomPosition[i].transform.position.z - zOffset), Quaternion.identity, BottomPosition[i].transform);
                 newCard.name = card;
+                newCard.GetComponent<Selectable>().Row = i;
 
                 if(card == Bottoms[i][Bottoms[i].Count - 1]){
                     newCard.GetComponent<Selectable>().FaceUp = true;
@@ -206,6 +208,7 @@ public class Solitaire : MonoBehaviour
                 topCard.name = card;
                 TripsDisplayed.Add(card);
                 topCard.GetComponent<Selectable>().FaceUp = true;
+                topCard.GetComponent<Selectable>().InDeckPile = true;
 
             }
             DeckLocation++;
